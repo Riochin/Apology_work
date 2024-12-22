@@ -1,0 +1,21 @@
+<html lang="ja">
+  <head>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css')}}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/script.js') }}"
+      defer
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1>ミニブログを作ってみよう {% block header %}{% endblock %}</h1>
+      <div>
+        <input id="picker" type="color" />
+      </div>
+    </header>
+    {% block content %}{% endblock %}
+  </body>
+</html>

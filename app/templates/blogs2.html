@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <title>ミニブログ</title>
+  </head>
+  <body>
+    <header>
+      <h1>ミニブログを作ってみよう</h1>
+    </header>
+
+    <div class="container">
+      <div id="post">
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
+
+      <ul class="blog-list">
+        {% for blog in blogs %}
+        <li class="blog-post">
+          <h2>{{ blog.title }}</h2>
+          <div class="meta">投稿者：{{ blog.user_name }}</div>
+          <p>{{ blog.body }}</p>
+          <a href="{{url_for('get_blog', id=blog[0])}}">[編集]</a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="form-container">
+        <form
+          action="{{url_for('blog_create')}}"
+          method="POST"
+          novalidate="novalidate"
+        >
+          <p>
+            <label for="title">タイトル：</label>
+            <input type="text" name="title" />
+          </p>
+          <p>
+            <label for="user_name">投稿者名：</label>
+            <input type="text" name="user_name" />
+          </p>
+          <p>
+            <label for="body">内容：</label>
+            <textarea name="body" cols="40" rows="10"></textarea>
+          </p>
+          <p>
+            <button type="submit">送る</button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
