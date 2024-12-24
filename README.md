@@ -31,13 +31,17 @@ https://qiita.com/shun_sakamoto/items/7944d0ac4d30edf91fde
 
 ## 2. Flaskのインストール
 
-仮想環境ができたら、
+プロジェクトで使用するパッケージはすべて requirements.txt に記載されています。これを使って、他のメンバーが同じパッケージをインストールできます！
 
-$ python3 pip install flask
+仮想環境をアクティブにできたら、以下のコマンドを実行して依存関係をインストールします。
 
-でFlaskをインストールしてあげてください。
-続けて、
+$ pip install -r requirements.txt
 
-$ pip install Flask-SQLAlchemy openai==1.55.3 httpx==0.27.2 anyio==3.7.0    
+これで、プロジェクトに必要なパッケージが全部インストールされる！おそらく
 
-でSQLAlchemyとFlaskをインストールしてください。これでうまくいってほしい、、、
+## 3. .envの作成
+
+新しく『.env』ファイルを作成して、.envexampleの内容をコピぺしてください。
+
+中に必要なAPIkeyを入力し、.envexampleには何もAPI keyが書かれていないことを確認してください。絶対にAPIkeyをGit Hub上にPushしないように心がけましょう！
+
