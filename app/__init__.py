@@ -1,43 +1,24 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import inspect
-from sqlalchemy.orm import DeclarativeBase
+import os
+from flask import Flask, render_template
+from dotenv import load_dotenv
+# from pyngrok import ngrok, conf
 
-class Base(DeclarativeBase):
-  pass #これは何にもしないと言う意味
+# .envファイルから環境変数を読み込む
+load_dotenv()
 
-db = SQLAlchemy()
+# ngrokの認証トークンを設定
+# conf.get_default().auth_token = os.getenv("NGROK_AUTH_TOKEN")
 
-def create_app():
-    #　Flaskアプリケーションのインスタンスを作成
-    app = Flask(__name__)
+# Flask アプリの設定
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-    #　アプリケーションの設定
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# ルートパスへのルーティング
+@app.route("/")
+def home():
+    return render_template("home.html")
 
-    #　SQLAlchemyをアプリケーションに初期化
-    db.init_app(app)
-
-    # ここでブループリントを登録
-    from .routes.blogs_routes import blogs_bp
-    # from .routes.comment_routes import comment_bp
-    # from .routes.tag_routes import tag_bp
-
-    app.register_blueprint(blogs_bp)
-    # app.register_blueprint(comment_bp)
-    # app.register_blueprint(tag_bp)
-
-    # アプリケーションのコンテキスト内でインポート
-    with app.app_context():
-        
-        from app.models.blog_models import Blog  # ルートとモデルをインポート
-        db.create_all()  # テーブルの作成
-        # blogs = Blog.query.all()
-        # print(blogs)
-
-        # データベースを検査し、テーブル名を取得して表示
-        inspector = inspect(db.engine)
-        print(inspector.get_table_names())
-
-    return app
+# if __name__ == "__main__":
+    # ngrok を起動して公開URLを取得
+    # public_url = ngrok.connect(5000)
+    # print(f"ngrok URL: {public_url}")
+    # app.run(port=5000)
