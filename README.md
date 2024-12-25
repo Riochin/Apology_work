@@ -1,5 +1,5 @@
 # Apology_work
-test
+test２
 
 ディレクトリ構成例
 
