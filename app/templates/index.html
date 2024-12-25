@@ -1,7 +1,63 @@
 <!DOCTYPE html>
-<html>
-  <head> </head>
-  <body>
-    <h1>Webアプリ初心者のFlaskチュートリアル</h1>
-  </body>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブログ一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .blog-container {
+            margin: 20px;
+        }
+        .blog {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .blog h2 {
+            margin: 0;
+        }
+        .blog p {
+            margin: 5px 0;
+        }
+        .tags {
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background-color: #f1f1f1;
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="blog-container">
+        <h1>ブログ一覧</h1>
+
+        <!-- Blogデータをループで表示 -->
+        {% for blog in blogs %}
+        <div class="blog">
+            <h2>{{ blog.title }}</h2>
+            <p><strong>投稿者:</strong> {{ blog.user_name }}</p>
+            <p><strong>投稿日:</strong> {{ blog.created_at }}</p>
+            <p><strong>内容:</strong> {{ blog.body }}</p>
+            
+            <!-- タグが存在する場合に表示 -->
+            {% if blog.tags %}
+                <div class="tags">
+                    <strong>タグ:</strong>
+                    {% for tag in blog.tags %}
+                        <span class="tag">{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
 </html>
