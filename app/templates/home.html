@@ -12,7 +12,11 @@
     <header>
         <h1>ミニブログをつくってみよう!</h1>
     </header>
-    <p>Let's begin!</p>
+    <ul>
+        {% for book in books %} <!-- ループさせてそれぞれ要素を取り出す -->
+        <li>{{ book }}</li>
+        {% endfor %}
+    </ul>
 </body>
 
 </html>
