@@ -1,24 +1,27 @@
 import os
 from flask import Flask, render_template
 from dotenv import load_dotenv
-# from pyngrok import ngrok, conf
+from flask_sqlalchemy import SQLAlchemy
 
 # .envファイルから環境変数を読み込む
 load_dotenv()
 
-# ngrokの認証トークンを設定
-# conf.get_default().auth_token = os.getenv("NGROK_AUTH_TOKEN")
-
 # Flask アプリの設定
-app = Flask(__name__, template_folder="templates", static_folder="static")
+def create_app():
+    app = Flask(__name__, template_folder="templates", static_folder="static")
+    db = SQLAlchemy(app)
 
-# ルートパスへのルーティング
-@app.route("/")
-def home():
-    return render_template("home.html")
+    # モジュールのインポート
+    from app.database import close_connection
+    from app.routes.routes import init_routes
 
-# if __name__ == "__main__":
-    # ngrok を起動して公開URLを取得
-    # public_url = ngrok.connect(5000)
-    # print(f"ngrok URL: {public_url}")
-    # app.run(port=5000)
+    # teardown_appcontext の登録
+    app.teardown_appcontext(close_connection)
+
+    # ルートの初期化
+    init_routes(app)
+    
+    return app
+
+#@title #6.データベースにデータを登録する
+

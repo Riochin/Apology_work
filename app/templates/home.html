@@ -14,7 +14,7 @@
     </header>
     <ul>
         {% for book in books %} <!-- ループさせてそれぞれ要素を取り出す -->
-        <li>{{ book }}</li>
+        <li>{{ book[1] }}</li>
         {% endfor %}
     </ul>
 </body>
