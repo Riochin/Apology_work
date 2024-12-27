@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  ：コメント詳細画面
+{% endblock %}
+
+{% block content %}
+　<div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+       </ul>
+       {% endif %}
+     {% endwith %}
+    </div>
+    <div>
+    <form
+    action="{{url_for('update_comment', blog_id=comment.blog_id, id=comment.id)}}"
+    method="post"
+    novalidate="novalidate"
+  >
+    <input type="hidden" name="_method" value="PATCH">
+    <p>
+      <label for="blog_id">ブログID：</label><a href="{{url_for("get_blog", id = comment.blog.id)}}">{{comment.blog_id}}</a>
+    </p>
+    <p>
+      <label for="user_name">投稿者名：</label><input type="text" name="user_name" value="{{comment.user_name}}" />
+    </p>
+    <p>
+      <label for="body">内容：</label><textarea name="body" cols="40" rows="10">{{comment.body}}</textarea>
+    </p>
+    <p><button type="submit">送る</button></p>
+    </form>
+
+  </div>
+  <div>
+  <form
+    action="{{url_for('update_comment', blog_id=comment.blog_id, id=comment.id)}}"
+    method="post"
+    novalidate="novalidate"
+  >
+  　<input type="hidden" name="_method" value="DELETE">
+   <p><button type="submit">削除</button></p>
+  </form>
+  </div>
+{% endblock %}
