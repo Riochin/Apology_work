@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  : ブログ一覧・作成
+{% endblock %}
+
+{% block content %}
+  <div id ="tags">
+    <h3>登録済みのすべてのタグ：</h3>
+    <ul>
+      {% for tag in tags %}
+        <li>{{ tag.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+    
+
+  <div id="timeline">
+    <ul>
+      {% for blog in blogs %} <!-- ループさせてそれぞれ要素を取り出す -->
+        <li>
+          <a href="{{ url_for('get_blog', id=blog.id) }}">
+            <h3 class="title">{{ blog.title }}</h3>
+            <p class="preview">{{ blog.body[:100] }}...</p>
+            <p class="user_name">投稿者: {{ blog.user_name }}</p>
+            <p class="created_at">{{ blog.created_at }}</p>
+            <div id ="tags">
+              <ul>
+                {% for tag in blog.tags %}
+                  <li>{{ tag.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+       </ul>
+       {% endif %}
+     {% endwith %}
+    </div>
+    <div>
+    <form
+    action="{{url_for('blog_create')}}"
+    method="POST"
+    novalidate="novalidate"
+  >
+    <p>
+      <label for="title">タイトル：</label><input type="text" name="title" value="{{blog.title or request.form["title"]}}" />
+    </p>
+    <p>
+      <label for="user_name">投稿者名：</label><input type="text" name="user_name" value="{{blog.user_name or request.form["user_name"]}}" />
+    </p>
+    <p>
+      <label for="body">内容：</label><textarea name="body" cols="40" rows="10">{{blog.body or request.form["body"]}}</textarea>
+    </p>
+    <p><button type="submit">送る</button></p>
+  </form>
+
+  </div>
+
+{% endblock %}
