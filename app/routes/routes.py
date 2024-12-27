@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from app import query_db
+from app.models.database import query_db  # 修正
 
 bp = Blueprint('main', __name__)
 
