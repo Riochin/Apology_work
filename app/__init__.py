@@ -1,24 +1,28 @@
-import os
-from flask import Flask, render_template
-from dotenv import load_dotenv
-# from pyngrok import ngrok, conf
+from flask import Flask
+from app.models.database import init_db, insert_or_delete_db  # ここでインポート
+from app.routes.routes import bp as main_bp
 
-# .envファイルから環境変数を読み込む
-load_dotenv()
+def create_app():
+    app = Flask(__name__)
 
-# ngrokの認証トークンを設定
-# conf.get_default().auth_token = os.getenv("NGROK_AUTH_TOKEN")
+    # データベース初期化
+    init_db()
 
-# Flask アプリの設定
-app = Flask(__name__, template_folder="templates", static_folder="static")
+    # アプリケーションコンテキスト内でデータベース操作
+    with app.app_context():
+        delete_sql = "DELETE FROM books"
+        insert_or_delete_db(delete_sql)
 
-# ルートパスへのルーティング
-@app.route("/")
-def home():
-    return render_template("home.html")
+        insert_sql = """
+            INSERT INTO books (id, title, author, year_published)
+            VALUES 
+            (1, 'わたし×IT＝最強説', 'NPO法人Waffle', 2023),
+            (2, 'ユウと魔法のプログラミング・ノート', '鳥井雪', 2023),
+            (3, 'ハッカーと画家', 'Paul Graham, 川合 史朗', 2005)
+        """
+        insert_or_delete_db(insert_sql)
 
-# if __name__ == "__main__":
-    # ngrok を起動して公開URLを取得
-    # public_url = ngrok.connect(5000)
-    # print(f"ngrok URL: {public_url}")
-    # app.run(port=5000)
+    # ルートを登録
+    app.register_blueprint(main_bp)
+
+    return app

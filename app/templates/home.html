@@ -13,8 +13,8 @@
         <h1>ミニブログをつくってみよう!</h1>
     </header>
     <ul>
-        {% for book in books %} <!-- ループさせてそれぞれ要素を取り出す -->
-        <li>{{ book }}</li>
+        {% for book in books %}
+        <li>{{ book['title'] }} by {{ book['author'] }}</li>
         {% endfor %}
     </ul>
 </body>
