@@ -1,0 +1,78 @@
+<!-- まどか担当 -->
+
+{% extends 'layout.html' %}
+
+{% block header %}
+    投稿画面
+{% endblock %}
+
+{% block content %}
+<div class="post-detail-container">
+  <header class="post-header">
+    <h1>ごめんなさい.com</h1>
+  </header>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <main class="post-content">
+    <div class="post-info">
+      <p class="user-name">{{ blog.user_name }}</p>
+      <h2 class="post-title">{{ blog.title }}</h2>
+    </div>
+
+    <div class="post-body">
+      <p>{{ blog.body }}</p>
+    </div>
+
+    <div class="post-actions">
+      <button class="like-button">
+        <span class="like-icon">&#9825;</span>
+        <span class="like-count">139</span>
+      </button>
+
+      <button class="share-button">
+        <span class="share-icon">&#x21E7;</span>
+      </button>
+
+      {% if is_editing %}
+        <form action="{{ url_for('update_blog', id=blog.id) }}" method="post" novalidate="novalidate">
+          <input type="hidden" name="_method" value="PATCH">
+          <p>
+            <label for="title">タイトル：</label><input type="text" name="title" value="{{ blog.title }}" />
+          </p>
+          <p>
+            <label for="address_name">宛先：</label><input type="text" name="user_name" value="{{ blog.user_name }}" />
+          </p>
+          <p>
+            <label for="body">本文：</label><textarea name="body" cols="40" rows="10">{{ blog.body }}</textarea>
+          </p>
+
+          <div class="submitBt">
+            <p><button type="submit">保存</button></p>
+          </div>
+        </form>
+      {% else %}
+        <button class="edit-button">保存して編集</button>
+      {% endif %}
+    </div>
+  </main>
+</div>
+
+
+<!-- 削除セクション -->
+<div class="delete-section">
+  <form action="{{ url_for('update_blog', id=blog.id) }}" method="post" novalidate="novalidate">
+    <input type="hidden" name="_method" value="DELETE">
+    <p><button type="submit" class="delete-btn">ブログを削除</button></p>
+  </form>
+</div>
+
+{% endblock %}
