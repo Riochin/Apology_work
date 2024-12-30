@@ -1,4 +1,4 @@
-<!-- {% extends 'layout.html' %}
+{% extends 'layout.html' %}
 
 {% block header %}
   ：ホーム
@@ -10,21 +10,4 @@
         <li><a href="{{ url_for("blog_index") }}"> ブログ一覧・作成 </a></li>
       </ul>
     </div>
-{% endblock %} -->
-
-<!DOCTYPE html>
-<html>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
-<head>
-</head>
-<body>
-    <header>
-      <h1>ミニブログをつくってみよう !</h1>
-    </header>
-    <ul>
-       {% for book in books %} <!-- ループさせてそれぞれ要素を取り出す -->
-      <li>{{ book[1] }}</li>
-       {% endfor %}
-</ul>
-</body>
-</html>
+{% endblock %}

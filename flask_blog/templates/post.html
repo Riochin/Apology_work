@@ -1,0 +1,215 @@
+<!-- りおちん担当 -->
+
+<!-- {% extends 'layout.html' %} -->
+
+{% block header %}
+  :投稿画面
+{% endblock %}
+
+{% block content %}
+<div>
+<!-- 編集成功！とかのメッセージとか -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <li>{{ message }}</li>
+  {% endfor %}
+    </ul>
+    {% endif %}
+  {% endwith %}
+</div>
+
+    <div class = "preview">
+      <button onclick="copyToClipboard()">Copy text</button>
+      <textarea readonly id="copyTarget" cols="40" rows="10">
+        コピー対象の文言（読み取り専用）
+      </textarea>
+    </div>
+
+    <div>
+      <form
+      action="{{url_for('update_blog', id=blog.id)}}"
+      method="post"
+      novalidate="novalidate"
+      >
+        <input type="hidden" name="_method" value="PATCH">
+        <p>
+          <label for="title">タイトル：</label><input type="text" name="title" value={{blog.title}} />
+        </p>
+        <p>
+          <label for="address_name">宛先：</label><input type="text" name="user_name" value={{blog.user_name}} />
+        </p>
+        <p>
+          <label for="body">本文：</label><textarea name="body" cols="40" rows="10"  >{{blog.body}}</textarea>
+        </p>
+        <div id="tags">
+          <h3>言い回し：</h3>
+          <ul>
+            <!-- {% for tag in blog.tags %} -->
+              <li>＜宛先＞</li>
+              <li>＜自分の名前＞</li>
+              <li>＜職場＞</li>
+              <li>＜日時＞</li>
+              <li>＜電車の名前＞</li>
+            <!-- {% endfor %} -->
+          </ul>
+        </div>
+
+        <div id="tags">
+          <h3>タグ：</h3>
+          <ul>
+            {% for tag in blog.tags %}
+              <li>{{ tag.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        
+        <!-- 保存ボタン -->
+        <div class = "submitBt">
+          <p><button type="submit">保存</button></p>
+        </div>  
+        
+        <!-- 公開ですか？ON/OFFトグル -->
+        
+        <div class = "privateToggle">
+          <p>非公開：</p>
+          <input id="toggle" class="toggle_input" type='checkbox' />
+          <label for="toggle" class="toggle_label" />
+         
+      </form>
+    </div>
+    
+<div><h3>おすすめタグ</h3>
+  <input type='button' id='tags_recommend' value="おすすめタグを取得" />
+  <ul id="recommended_tags">
+    <!-- <li>test</li> -->
+    <!-- ここに表示される -->
+  </ul>
+  <div>
+    <form
+    action="{{url_for('create_tag', id=blog.id)}}"
+    method="post"
+    novalidate="novalidate"
+    >
+      <label for="name">タグ：</label>
+      <input type="text" id= "outputBox" name="name"  />
+      </p>
+    <p><button type="submit">登録</button></p>
+    </form>
+  </div>
+</div>
+
+<div>
+  <button id="toggleDetailsButton">詳細設定を開く</button>
+</div>
+
+<!-- 詳細設定セクション -->
+<div id="detailsSection" style="display: none;">
+  <h3>詳細設定</h3>
+  <p>
+    ここに詳細設定の内容を記述してください。
+    例: 追加のテキストフィールドやチェックボックスなど。
+    <div>
+      <p>フォーマル度：</p>
+      カジュアル
+      <input type="range" id="formal" name="formal" min="0" max="100" value="90" step="10" />
+      フォーマル
+    </div>
+
+    <div id="formats">
+      <h3>フォーマット：</h3>
+      <ul>
+        <!-- {% for tag in blog.tags %} -->
+          <li>メール</li>
+          <li>LINE</li>
+          <li>Slack</li>
+          <li>SMS</li>
+          <li>Discord</li>
+        <!-- {% endfor %} -->
+      </ul>
+    </div>
+
+    <p>
+      <label for="body">メモ：</label><textarea name="memo" cols="40" rows="10" id = "comment_box">メモを入れる</textarea>
+    </p>
+    
+  </p>
+</div>
+
+  <!-- 削除セクション -->
+  <div class="delete-section">
+    <form action="{{url_for('update_blog', id=blog.id)}}" method="post" novalidate="novalidate">
+        <input type="hidden" name="_method" value="DELETE">
+        <p><button type="submit" class="delete-btn">ブログを削除</button></p>
+    </form>
+  </div>
+ 
+
+
+  <script defer>
+//おすすめタグを取得する部分
+  const recommend_button = document.querySelector('#tags_recommend');
+  const recommend_tag_url = "{{ url_for('recommend_tags', id=blog.id) }}"
+  const ulElement =  document.querySelector('#recommended_tags');
+
+  const getRecommendTags = () => {
+    fetch(recommend_tag_url)
+    .then(response => response.json())
+    .then(tag_names => {
+        console.log(tag_names)
+        tag_names.forEach(function(tag_name) {
+            const li = document.createElement("li"); // <li>要素を作成
+            li.textContent = tag_name; // <li>要素に文字列を設定
+            ulElement.appendChild(li); // <ul>に<li>を追加
+        }) 
+    })
+   }
+   //ボタンにメソッドを紐づける
+   recommend_button.addEventListener('click', getRecommendTags);
+
+
+//タグ名を押すとテキストボックスに入る部分
+  const recommendedTags= document.querySelector('#recommended_tags');
+  
+  recommendedTags.addEventListener('click',function(event){
+      const selectedTag = event.target.textContent.trim();
+      const outputBox = document.querySelector("#outputBox");
+      outputBox.value = selectedTag;
+    });
+
+  </script>
+
+<script>
+  // 詳細設定セクションの開閉を制御する
+  const toggleButton = document.getElementById("toggleDetailsButton");
+  const detailsSection = document.getElementById("detailsSection");
+
+  toggleButton.addEventListener("click", () => {
+    if (detailsSection.style.display === "none") {
+      detailsSection.style.display = "block";
+      toggleButton.textContent = "詳細設定を閉じる";
+    } else {
+      detailsSection.style.display = "none";
+      toggleButton.textContent = "詳細設定を開く";
+    }
+  });
+</script>
+
+<!-- コピーボタンのJS -->
+<script>
+  function copyToClipboard() {
+      // コピー対象をJavaScript上で変数として定義する
+      var copyTarget = document.getElementById("copyTarget");
+
+      // コピー対象のテキストを選択する
+      copyTarget.select();
+
+      // 選択しているテキストをクリップボードにコピーする
+      document.execCommand("Copy");
+
+      // コピーをお知らせする
+      alert("コピーできました！ : " + copyTarget.value);
+  }
+</script>
+{% endblock %}
