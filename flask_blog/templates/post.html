@@ -29,24 +29,24 @@
 
     <div>
       <form
-      action="{{url_for('update_blog', id=blog.id)}}"
+      action="{{url_for('update_post', id=post.id)}}"
       method="post"
       novalidate="novalidate"
       >
         <input type="hidden" name="_method" value="PATCH">
         <p>
-          <label for="title">タイトル：</label><input type="text" name="title" value={{blog.title}} />
+          <label for="title">タイトル：</label><input type="text" name="title" value={{post.title}} />
         </p>
         <p>
-          <label for="address_name">宛先：</label><input type="text" name="user_name" value={{blog.user_name}} />
+          <label for="address_name">宛先：</label><input type="text" name="user_name" value={{post.user_name}} />
         </p>
         <p>
-          <label for="body">本文：</label><textarea name="body" cols="40" rows="10"  >{{blog.body}}</textarea>
+          <label for="body">本文：</label><textarea name="body" cols="40" rows="10"  >{{post.body}}</textarea>
         </p>
         <div id="tags">
           <h3>言い回し：</h3>
           <ul>
-            <!-- {% for tag in blog.tags %} -->
+            <!-- {% for tag in post.tags %} -->
               <li>＜宛先＞</li>
               <li>＜自分の名前＞</li>
               <li>＜職場＞</li>
@@ -59,7 +59,7 @@
         <div id="tags">
           <h3>タグ：</h3>
           <ul>
-            {% for tag in blog.tags %}
+            {% for tag in post.tags %}
               <li>{{ tag.name }}</li>
             {% endfor %}
           </ul>
@@ -88,7 +88,7 @@
   </ul>
   <div>
     <form
-    action="{{url_for('create_tag', id=blog.id)}}"
+    action="{{url_for('create_tag', id=post.id)}}"
     method="post"
     novalidate="novalidate"
     >
@@ -106,40 +106,47 @@
 
 <!-- 詳細設定セクション -->
 <div id="detailsSection" style="display: none;">
-  <h3>詳細設定</h3>
-  <p>
-    ここに詳細設定の内容を記述してください。
-    例: 追加のテキストフィールドやチェックボックスなど。
-    <div>
-      <p>フォーマル度：</p>
-      カジュアル
-      <input type="range" id="formal" name="formal" min="0" max="100" value="90" step="10" />
-      フォーマル
-    </div>
-
-    <div id="formats">
-      <h3>フォーマット：</h3>
-      <ul>
-        <!-- {% for tag in blog.tags %} -->
-          <li>メール</li>
-          <li>LINE</li>
-          <li>Slack</li>
-          <li>SMS</li>
-          <li>Discord</li>
-        <!-- {% endfor %} -->
-      </ul>
-    </div>
-
-    <p>
-      <label for="body">メモ：</label><textarea name="memo" cols="40" rows="10" id = "comment_box">メモを入れる</textarea>
-    </p>
+  <!-- actionURLちょっと不安、AI用のPOSTを作る？ -->
+  <form
+    action="{{url_for('update_post', id=post.id)}}"
     
-  </p>
+    method="post"
+    novalidate="novalidate">
+    <h3>詳細設定</h3>
+    <p>
+      ここに詳細設定の内容を記述してください。
+      例: 追加のテキストフィールドやチェックボックスなど。
+      <div>
+        <p>フォーマル度：</p>
+        カジュアル
+        <input type="range" id="formal" name="formal" min="0" max="100" value="90" step="10" />
+        フォーマル
+      </div>
+
+      <div id="formats">
+        <h3>フォーマット：</h3>
+        <ul>
+          <!-- {% for tag in post.tags %} -->
+          <div class="radio-wrap">
+            <input type="radio" name="メール" value="テスト1" checked>メール
+            <input type="radio" name="LINE" value="テスト2">LINE
+            <input type="radio" name="Slack" value="テスト3">Slack
+          </div>
+          <!-- {% endfor %} -->
+        </ul>
+      </div>
+
+      <p>
+        <label for="body">メモ：</label><textarea name="memo" cols="40" rows="10" id = "comment_box">メモを入れる</textarea>
+      </p>
+      
+    </p>
+  </form>
 </div>
 
   <!-- 削除セクション -->
   <div class="delete-section">
-    <form action="{{url_for('update_blog', id=blog.id)}}" method="post" novalidate="novalidate">
+    <form action="{{url_for('update_post', id=post.id)}}" method="post" novalidate="novalidate">
         <input type="hidden" name="_method" value="DELETE">
         <p><button type="submit" class="delete-btn">ブログを削除</button></p>
     </form>
@@ -150,7 +157,7 @@
   <script defer>
 //おすすめタグを取得する部分
   const recommend_button = document.querySelector('#tags_recommend');
-  const recommend_tag_url = "{{ url_for('recommend_tags', id=blog.id) }}"
+  const recommend_tag_url = "{{ url_for('recommend_tags', id=post.id) }}"
   const ulElement =  document.querySelector('#recommended_tags');
 
   const getRecommendTags = () => {

@@ -1,0 +1,133 @@
+<!-- りおちん担当 -->
+
+<!-- {% extends 'layout.html' %} -->
+
+{% block header %}
+  :投稿画面
+{% endblock %}
+
+{% block content %}
+<div>
+<!-- 編集成功！とかのメッセージとか -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+  {% for message in messages %}
+    <li>{{ message }}</li>
+  {% endfor %}
+    </ul>
+    {% endif %}
+  {% endwith %}
+</div>
+
+<div class="preview">
+  <button onclick="copyToClipboard()">Copy text</button>
+  <textarea readonly id="copyTarget" cols="40" rows="10">
+    コピー対象の文言（読み取り専用）
+  </textarea>
+</div>
+
+<div>
+  <form
+  action="{{url_for('post_create')}}"
+  method="post"
+  novalidate="novalidate"
+  >
+    <p>
+      <label for="title">タイトル：</label><input type="text" name="title" value="" />
+    </p>
+    <p>
+      <label for="address">宛先：</label><input type="text" name="address" value="" />
+    </p>
+    <p>
+        <label for="user_name">user_name：</label><input type="text" name="user_name" value="" />
+    </p>
+    <p>
+        <label for="user_id">user_id：</label><input type="text" name="user_id" value="" />
+    </p>
+    <p>
+      <label for="body">本文：</label><textarea name="body" cols="40" rows="10"></textarea>
+    </p>
+    
+
+    <div id="tags">
+      <h3>言い回し：</h3>
+      <ul>
+        <li>＜宛先＞</li>
+        <li>＜自分の名前＞</li>
+        <li>＜職場＞</li>
+        <li>＜日時＞</li>
+        <li>＜電車の名前＞</li>
+      </ul>
+    </div>
+
+    <!-- 保存ボタン -->
+    <div class="submitBt">
+      <p><button type="submit">保存</button></p>
+    </div>
+
+    <!-- 公開ですか？ON/OFFトグル -->
+    <div class="privateToggle">
+      <p>非公開：</p>
+      <input id="toggle" class="toggle_input" type='checkbox' />
+      <label for="toggle" class="toggle_label" />
+    </div>
+  </form>
+</div>
+
+
+
+<div>
+  <button id="toggleDetailsButton">詳細設定を開く</button>
+</div>
+
+<!-- 詳細設定セクション -->
+<div id="detailsSection" style="display: none;">
+  <form action="{{url_for('post_create')}}" method="post" novalidate="novalidate">
+    <h3>詳細設定</h3>
+    <p>
+      <div>
+        <p>フォーマル度：</p>
+        カジュアル
+        <input type="range" id="formal" name="formal" min="0" max="100" value="90" step="10" />
+        フォーマル
+      </div>
+
+      <div id="formats">
+        <h3>フォーマット：</h3>
+        <div class="radio-wrap">
+          <input type="radio" name="format" value="メール" checked>メール
+          <input type="radio" name="format" value="LINE">LINE
+          <input type="radio" name="format" value="Slack">Slack
+        </div>
+      </div>
+
+      <p>
+        <label for="memo">メモ：</label><textarea name="memo" cols="40" rows="10" id="comment_box">メモを入れる</textarea>
+      </p>
+      <p><button type="submit">AI添削</button></p>
+    </p>
+  </form>
+</div>
+
+<script defer>
+  const toggleButton = document.getElementById("toggleDetailsButton");
+  const detailsSection = document.getElementById("detailsSection");
+  toggleButton.addEventListener("click", () => {
+    if (detailsSection.style.display === "none") {
+      detailsSection.style.display = "block";
+      toggleButton.textContent = "詳細設定を閉じる";
+    } else {
+      detailsSection.style.display = "none";
+      toggleButton.textContent = "詳細設定を開く";
+    }
+  });
+
+  function copyToClipboard() {
+    const copyTarget = document.getElementById("copyTarget");
+    copyTarget.select();
+    document.execCommand("Copy");
+    alert("コピーできました！ : " + copyTarget.value);
+  }
+</script>
+{% endblock %}
