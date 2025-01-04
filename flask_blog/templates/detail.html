@@ -1,0 +1,94 @@
+<!-- まどか担当 -->
+
+<!-- りおちん1/1 13:51 blog-> post -->
+<!-- りおちん1/2 23:51 likesカウンター追加 -->
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}"> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<div class="post-detail-container">
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <main class="post-content">
+    <div class="post-info">
+     <h2 class="post-title">{{ post.title }}</h2>
+      <p class="user-name">{{ post.user_name }}</p>
+    </div>
+
+    <div id="tags">
+          <p>タグ：</p>
+          <ul>
+            {% for tag in post.tags %}
+              <li>{{ tag.name }}</li>
+            {% endfor %}
+          </ul>
+    </div>
+
+    <!-- コピー対象プレビュー -->
+    <div class="textarea-wrapper">
+      <textarea readonly id="copyTarget" cols="40" rows="10">{{ post.body }}
+      </textarea>
+      <button type="button" class="copy-button" onclick="copyToClipboard()">
+          <i class="far fa-copy" style="color: #6B7280"></i>
+      </button>
+    </div>
+
+    <div class="post-actions">
+        <!-- いいねぼたん -->
+        <button class="like-button" onclick="likePost({{ post.id }})">
+            <span class="like-icon" style="color: #EC4899">&#9825;</span>
+            <span class="like-count" id="like-count-{{ post.id }}">{{ post.likes }}</span>
+        </button>
+
+        <!-- 編集ボタン -->
+        <div class="post-actions">
+        <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-primary">
+            <button class="edit-button">保存して編集</button>
+        </a>
+        </div>
+        
+        <script>
+        //いいねカウントのスクリプト
+            function likePost(postId) {
+                fetch(`/posts/${postId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ post_id: postId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                // いいねカウントを更新
+                document.getElementById('like-count-' + postId).textContent = data.likes;
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        </script>
+    </div>
+  </main>
+</div>
+
+
+
+<!-- 削除セクション -->
+<div class="delete-section">
+  <form action="{{ url_for('update_post', id=post.id) }}" method="post" novalidate="novalidate">
+    <input type="hidden" name="_method" value="DELETE">
+    <p><button type="submit" class="delete-btn">ブログを削除</button></p>
+  </form>
+</div>
+
+{% endblock %}

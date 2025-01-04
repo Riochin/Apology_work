@@ -1,453 +1,126 @@
-/* 全体の背景色とフォント */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f7f7f7;
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    color: #333;
+    background: #f7f7f7;
+    font-family: sans-serif;
 }
 
-/* ヘッダー */
-header {
-    background-color: #5c4d91; /* 少し落ち着いた色に */
-    color: #fedd74;
-    padding: 20px 0;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-    font-weight: 600;
-}
-
-/* コンテナ */
 .container {
-    width: 85%;
-    margin: 30px auto;
-    max-width: 1000px;
-}
-
-/* ブログリスト */
-.blog-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.blog-post {
-    background-color: #fff;
-    margin-bottom: 20px;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.blog-post:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-
-.blog-post h2 {
-    margin: 0;
-    font-size: 1.8rem;
-    color: #5c4d91;
-}
-
-.blog-post .meta {
-    color: #999;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-}
-
-.blog-post p {
-    line-height: 1.8;
-    font-size: 1.1rem;
-}
-
-.blog-post a {
-    color: #5c4d91;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.blog-post a:hover {
-    text-decoration: underline;
-}
-
-/* フォーム */
-form {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-form p {
-    margin-bottom: 15px;
-}
-
-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 1rem;
-    color: #5c4d91;
-}
-
-form input,
-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: border 0.3s ease;
-}
-
-form input:focus,
-form textarea:focus {
-    border-color: #5c4d91;
-    outline: none;
-}
-
-form button {
-    background-color: #5c4d91;
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-}
-
-form button:hover {
-    background-color: #4b3a7c;
-}
-
-/* タグ */
-#recommended_tags {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-ul li {
-    background-color: #e0e0e0;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-ul li:hover {
-    background-color: #5c4d91;
-    color: #fff;
-}
-
-
-//コメントを吹き出しにするところ
-#comments_list ul li {
-  position: relative; /* 吹き出しの尾を表示するために必要 */
-  background-color: #e0e0e0;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: block; /* 吹き出し尾を正常に表示 */
-  max-width: 400px;
-}
-
-/* 吹き出しの尾を作成 */
-
-#comments_list ul li::after {
-  content: "";
-  position: absolute;
-  bottom: -10px; /* 吹き出しの尾を下側に配置 */
-  left: 20px; /* 尾の位置を調整 */
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 10px 10px 0 10px; /* 尾の形を三角形にする */
-  border-color: #e0e0e0 transparent transparent transparent; /* 吹き出しと同じ色 */
-  transition: border-color 0.3s ease;
-} 
-
-#comments_list ul li:hover::after {
-  border-color: #5c4d91 transparent transparent transparent; /* ホバー時に尾の色も変える */
-}
-
-#comments_list ul li a {
-  text-decoration: none; /* 下線を消す */
-  color: inherit; /* 親要素の文字色を継承する */
-}
-
-
-/* コメントセクション */
-#comment_section {
-    margin-top: 40px;
-}
-
-#comment_section h3 {
-    font-size: 1.6rem;
-    color: #5c4d91;
-    margin-bottom: 20px;
-}
-
-#comment_section input[type="text"],
-#comment_section textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-bottom: 15px;
-}
-
-#comment_section button {
-    background-color: #5c4d91;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-}
-
-#comment_section button:hover {
-    background-color: #4b3a7c;
-}
-
-#recommended_tags {
-    list-style: none;
-    display: flex;
-    gap: 10px;
-    padding: 0;
-}
-
-#recommended_tags li {
-    background-color: #e0e0e0;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#recommended_tags li:hover {
-    background-color: #5c4d91;
-    color: #fff;
-}
-
-/* レスポンシブデザイン */
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-    }
-
-    form p {
-        flex-direction: column;
-    }
-
-    form label,
-    form input,
-    form textarea {
-        font-size: 0.95rem;
-    }
-}
-
-/* 削除セクションのスタイル */
-.delete-section {
-    width: 100%; /* 横幅100%に設定 */
-    margin-top: 30px; /* 上部に少しスペースを追加 */
-    text-align: center;
-}
-
-/* 送信ボタン */
-.delete-section .delete-btn {
-    width: 100%;  /* 横幅を100%に */
-}
-
-/* 削除ボタン */
-.delete-section .delete-btn {
-    background-color: #d32f2f;  /* 赤色 */
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease;
-    width: 100%;  /* 横幅を100%に */
-}
-
-.delete-section .delete-btn:hover {
-    background-color: #b71c1c;  /* 濃い赤に変更 */
-}
-
-/* 削除フォーム周りの余計な余白をリセット */
-.delete-section form {
-    margin: 0;
-    padding: 0;
-    display: inline-block;  /* フォームのデフォルト設定をリセット */
-    width: 100%;  /* 横幅のリセット */
-    background: none;  /* 背景色をリセット */
-}
-
-/* フォーム内のデフォルト設定を解除 */
-.delete-section form p,
-.delete-section form label,
-.delete-section form input,
-.delete-section form textarea,
-.delete-section form button {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
-}
-
-/* タイムライン全体のスタイル（blogs.html） */
-#timeline {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
+    padding: 0 1rem;
 }
 
-#timeline ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: block; /* ブロック要素として縦に並べる */
-}
-
-#timeline ul li {
-    background: #fff;
-    margin-bottom: 20px; /* 各要素の間隔を設定 */
-    padding: 15px 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
-    width: 100%; /* 親要素の幅に合わせる */
-    box-sizing: border-box; /* paddingを含めて幅を固定 */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#timeline ul li:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-#timeline ul li a {
-    text-decoration: none;
-    color: #333;
-    display: block;
-}
-
-#timeline ul li .title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0 0 8px 0;
-    color: #5c4d91;
-}
-
-#timeline ul li .preview {
-    font-size: 0.95rem;
-    color: #555;
-    margin: 0 0 10px 0;
-    line-height: 1.4;
-}
-
-#timeline ul li .user_name {
-    font-size: 0.8rem;
-    color: #888;
-    text-align: right;
-    margin: 0;
-    font-style: italic;
-}
-#timeline ul li .created_at {
-    font-size: 0.75rem;
-    color: #aaa;
-    text-align: right;
-    margin-top: 5px;
-}
-
-/* 縦ラインの装飾 */
-#timeline ul li::before {
-    content: "";
-    position: absolute;
-    left: -12px;
-    top: 0;
-    width: 6px;
-    height: 100%;
-    background-color: #5c4d91;
-    border-radius: 3px;
-}
-
-/* タグリスト専用のスタイル */
-#timeline #tags ul {
-     all: unset; /* 全てのスタイルをリセット */
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.header {
     display: flex;
-    weight
-    flex-wrap: wrap;
-    gap: 10px;
-    border: 0px solid #ddd;
-    border-radius: 0px;
-    box-shadow: 0px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
 }
 
-#timeline #tags ul li {
-    background-color: #e0e0e0;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FFB800;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.search {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    margin: 1rem 0;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    background: #f3f4f6;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    transform: none; /* transformの解除 */
-    box-shadow: none; /* 影を削除 */
-    border: none; /* ボーダーを削除 */
-
-    display: inline-block; /* 横幅を内容に合わせる */
-    width: auto; /* 自動幅調整 */
-    max-width: 100%; /* 親要素の幅を超えないようにする */
-    white-space: nowrap; /* テキストが折り返されないようにする */
 }
 
-#timeline #tags ul li:hover {
-    background-color: #5c4d91;
-    color: #fff;
-    transform: none;
-}
-/* #tags 内の縦ライン装飾を無効化 */
-#timeline #tags ul li::before {
-    content: none;
+.filter-btn.active {
+    background: #FFB800;
+    color: white;
 }
 
+.sort {
+    margin-left: auto;
+    padding: 0.5rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+}
+
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem 0;
+}
+
+.dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: #e5e5e5;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #FFB800;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* フォーカス時のメインカラー反映（全てのinputとtextarea） */
+input[type="text"]:focus, 
+textarea:focus, 
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus {
+    border-color: #F2BE2F; /* メインカラー */
+    background-color: #FFF8E1; /* 明るめの背景 */
+    outline: none; /* デフォルトのアウトラインを無くす */
+}
+
+/* 入力中のテキストエリアやinputの背景色変更 */
+input[type="text"], 
+textarea {
+    background-color: #F7F7F7; /* 通常の背景 */
+}
+
+input[type="text"]:focus, 
+textarea:focus {
+    background-color: #FFF8E1; /* フォーカス時の背景 */
+}
+
+
+
+/* リンクタグのスタイル */
+a {
+  text-decoration: none; /* デフォルトの下線を削除 */
+  color: #000000
+}
 

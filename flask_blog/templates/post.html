@@ -64,6 +64,25 @@
             {% endfor %}
           </ul>
         </div>
+
+        <div><h3>おすすめタグ</h3>
+            <input type='button' id='tags_recommend' value="おすすめタグを取得" />
+            <ul id="recommended_tags">
+                <!-- <li>test</li> -->
+                <!-- ここに表示される -->
+            </ul>
+            <div>
+                <form
+                action="{{url_for('create_tag')}}"
+                method="post"
+                novalidate="novalidate"
+                >
+                <label for="name">タグ：</label>
+                <input type="text" id="outputBox" name="name" />
+                <p><button type="submit">登録</button></p>
+                </form>
+            </div>
+        </div>
         
         <!-- 保存ボタン -->
         <div class = "submitBt">
@@ -79,26 +98,6 @@
          
       </form>
     </div>
-    
-<div><h3>おすすめタグ</h3>
-  <input type='button' id='tags_recommend' value="おすすめタグを取得" />
-  <ul id="recommended_tags">
-    <!-- <li>test</li> -->
-    <!-- ここに表示される -->
-  </ul>
-  <div>
-    <form
-    action="{{url_for('create_tag', id=post.id)}}"
-    method="post"
-    novalidate="novalidate"
-    >
-      <label for="name">タグ：</label>
-      <input type="text" id= "outputBox" name="name"  />
-      </p>
-    <p><button type="submit">登録</button></p>
-    </form>
-  </div>
-</div>
 
 <div>
   <button id="toggleDetailsButton">詳細設定を開く</button>

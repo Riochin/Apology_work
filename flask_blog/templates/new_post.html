@@ -1,12 +1,20 @@
 <!-- りおちん担当 -->
 
-<!-- {% extends 'layout.html' %} -->
-
-{% block header %}
-  :投稿画面
-{% endblock %}
+{% extends 'layout.html' %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_post.css') }}"> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- あおい編集 -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+<!-- あおい編集おわり -->
+
+
 <div>
 <!-- 編集成功！とかのメッセージとか -->
 {% with messages = get_flashed_messages() %}
@@ -20,13 +28,6 @@
   {% endwith %}
 </div>
 
-<div class="preview">
-  <button onclick="copyToClipboard()">Copy text</button>
-  <textarea readonly id="copyTarget" cols="40" rows="10">
-    コピー対象の文言（読み取り専用）
-  </textarea>
-</div>
-
 <div>
   <form
   action="{{url_for('post_create')}}"
@@ -34,10 +35,10 @@
   novalidate="novalidate"
   >
     <p>
-      <label for="title">タイトル：</label><input type="text" name="title" value="" />
+      <label for="title">タイトル：</label><input type="text" name="title" value="{{ post.title if post else '' }}" />
     </p>
     <p>
-      <label for="address">宛先：</label><input type="text" name="address" value="" />
+      <label for="address">宛先：</label><input type="text" name="address" value="{{ post.address if post else '' }}" />
     </p>
     <p>
         <label for="user_name">user_name：</label><input type="text" name="user_name" value="" />
@@ -45,14 +46,19 @@
     <p>
         <label for="user_id">user_id：</label><input type="text" name="user_id" value="" />
     </p>
-    <p>
-      <label for="body">本文：</label><textarea name="body" cols="40" rows="10"></textarea>
+    <!-- 本文エリア -->
+    <p class="textarea-wrapper">
+        <label for="body">本文：</label>
+        <textarea name="body" cols="40" rows="10" id="copyBodyTarget">{{ post.body if post else '' }}</textarea>
+        <button type="button" class="copy-button" onclick="copyBodyToClipboard()">
+            <i class="far fa-copy" style="color: #6B7280"></i>
+        </button>
     </p>
     
 
-    <div id="tags">
-      <h3>言い回し：</h3>
-      <ul>
+    <div>
+      <p>言い回し：</p>
+      <ul id = "phrases">
         <li>＜宛先＞</li>
         <li>＜自分の名前＞</li>
         <li>＜職場＞</li>
@@ -60,6 +66,28 @@
         <li>＜電車の名前＞</li>
       </ul>
     </div>
+
+    <!-- あおい編集 -->
+    <!-- タグ選択 -->
+    <div>
+      <label for="tag-select">タグの追加：</label>
+      <select name="tagoptions" multiple id="tagSelect">
+          <option value="">--タグを選んでください--</option>
+          {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.name }}</option>
+          {% endfor %}
+      </select>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#tagSelect').select2({
+          placeholder: "--タグを選んでください--", 
+          allowClear: true // 選択のクリアを許可
+        });
+      });
+    </script>
+    <!-- あおい編集おわり --> 
 
     <!-- 保存ボタン -->
     <div class="submitBt">
@@ -76,58 +104,52 @@
 </div>
 
 
-
-<div>
-  <button id="toggleDetailsButton">詳細設定を開く</button>
-</div>
-
 <!-- 詳細設定セクション -->
-<div id="detailsSection" style="display: none;">
+<details>
+  <summary>詳細設定<span class="icon"></span>
+  </summary>
   <form action="{{url_for('post_create')}}" method="post" novalidate="novalidate">
-    <h3>詳細設定</h3>
+
     <p>
-      <div>
-        <p>フォーマル度：</p>
+        <label for="formal">フォーマル度：</label>
         カジュアル
         <input type="range" id="formal" name="formal" min="0" max="100" value="90" step="10" />
         フォーマル
-      </div>
-
-      <div id="formats">
-        <h3>フォーマット：</h3>
-        <div class="radio-wrap">
-          <input type="radio" name="format" value="メール" checked>メール
-          <input type="radio" name="format" value="LINE">LINE
-          <input type="radio" name="format" value="Slack">Slack
-        </div>
-      </div>
-
-      <p>
-        <label for="memo">メモ：</label><textarea name="memo" cols="40" rows="10" id="comment_box">メモを入れる</textarea>
-      </p>
-      <p><button type="submit">AI添削</button></p>
     </p>
+    
+    <div id="formats">
+      <p>フォーマット：</p>
+      <div class="radio-wrap">
+        <input type="radio" id="email" name="format" value="メール" checked>
+        <label for="email">メール</label>
+        
+        <input type="radio" id="line" name="format" value="LINE">
+        <label for="line">LINE</label>
+        
+        <input type="radio" id="slack" name="format" value="Slack">
+        <label for="slack">Slack</label>
+      </div>
+    </div>
+
+    <p>
+      <label for="memo">メモ：</label><textarea name="memo" cols="40" rows="10" id="comment_box">メモを入れる</textarea>
+    </p>
+    <p><button type="submit">AI添削</button></p>
+
+    <!-- コピー対象プレビュー -->
+    <div class="textarea-wrapper">
+      <textarea readonly id="copyTarget" cols="40" rows="10">
+          コピー対象の文言（読み取り専用）
+      </textarea>
+      <button type="button" class="copy-button" onclick="copyToClipboard()">
+          <i class="far fa-copy" style="color: #6B7280"></i>
+      </button>
+    </div>
   </form>
-</div>
+</details>
+
 
 <script defer>
-  const toggleButton = document.getElementById("toggleDetailsButton");
-  const detailsSection = document.getElementById("detailsSection");
-  toggleButton.addEventListener("click", () => {
-    if (detailsSection.style.display === "none") {
-      detailsSection.style.display = "block";
-      toggleButton.textContent = "詳細設定を閉じる";
-    } else {
-      detailsSection.style.display = "none";
-      toggleButton.textContent = "詳細設定を開く";
-    }
-  });
 
-  function copyToClipboard() {
-    const copyTarget = document.getElementById("copyTarget");
-    copyTarget.select();
-    document.execCommand("Copy");
-    alert("コピーできました！ : " + copyTarget.value);
-  }
 </script>
 {% endblock %}

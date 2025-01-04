@@ -1,16 +1,18 @@
 <html lang="ja">
 <head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-    <header>
-       <h1> ごめんなさい.com {% block header %}{% endblock %}</h1>
-       <div>
-          <input id="picker" type="color">
-       </div>
+    <header class="header">
+        <div class="logo">
+            <img src="/api/placeholder/32/32" alt="Logo" width="32" height="32">
+            <span>ごめんなさい.com</span>
+        </div>
+        <button>
+            <i class="fas fa-bars" style="color: #FFB800; font-size: 1.5rem;"></i>
+        </button>
     </header>
-    {% block content %}{% endblock  %}
+    {% block content %}{% endblock %}
 </body>
-
 </html>

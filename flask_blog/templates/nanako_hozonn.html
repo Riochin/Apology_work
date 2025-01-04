@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ごめんなさい.com</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f7f7f7;
+            font-family: sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #FFB800;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .search {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 999px;
+            margin: 1rem 0;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 999px;
+            border: none;
+            background: #f3f4f6;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background: #FFB800;
+            color: white;
+        }
+
+        .sort {
+            margin-left: auto;
+            padding: 0.5rem;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .post {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title {
+            font-weight: bold;
+        }
+
+        .post-author {
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: #FFB800;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-post {
+            background: #B4D167;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .add-post i {
+            color: white;
+            font-size: 2rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #e5e5e5;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: #FFB800;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="/api/placeholder/32/32" alt="Logo" width="0" height="0">
+                <span>ごめんなさい.com</span>
+            </div>
+            <button><i class="fas fa-bars" style="color: #FFB800; font-size: 1.5rem;"></i></button>
+        </header>
+
+        <input type="search" class="search" placeholder="Value">
+
+        <div class="filters">
+            {% for tag in tags %}
+            <button class="filter-btn">
+            <li>{{ tag.name }}</li>
+            {% endfor %}
+            </button>
+        
+            <select class="sort">
+                <option>新着順</option>
+            </select>
+        </div>
+
+        <div class="grid">
+            <a href="{{ url_for('post_create') }}">
+                <div class="add-post">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="pagination">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <script>
+        const grid = document.querySelector('.grid');
+        const postTemplate = 
+            <div class="post">
+                <div class="post-header">
+                    <span class="post-title">投稿名：{{ post.title }}</span>
+                    <span class="post-author">投稿者名：{{ post.user_name }}</span>
+                </div>
+                <div class="post-content">
+                    {{post.body or request.form["body"]}}
+                </div>
+                {% for tag in post.tags %}
+                    <div class="tags">
+                        <span class="tag">タグ： {{ tag.name }}</span>
+                    </div>
+                {% endfor %}
+                <div class="post-footer">
+                    <div class="likes">
+                        <button><i class="far fa-heart" style="color: #EC4899"></i></button>
+                        <span>{{post.likes}</span>
+                    </div>
+                    <button><i class="far fa-copy" style="color: #6B7280"></i></button>
+                </div>
+            </div>
+        ;
+
+        for (let i = 0; i < 8; i++) {
+            grid.insertAdjacentHTML('beforeend', postTemplate);
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+            });
+        });
+
+        // Pagination dots
+        document.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                document.querySelector('.dot.active').classList.remove('active');
+                dot.classList.add('active');
+            });
+        });
+    </script>
+</body>

@@ -1,0 +1,73 @@
+<!-- ななこ担当 -->
+
+{% extends 'layout.html' %}
+
+{% block content %}
+  <div id ="tags">
+    <h3>登録済みのすべてのタグ：</h3>
+    <ul>
+      {% for tag in tags %}
+        <li>{{ tag.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+    <!-- 試しに入れた新規作成ボタン -->
+  <a href="{{ url_for('post_create') }}">新規作成</a>
+    
+
+  <div id="timeline">
+    <ul>
+      {% for post in posts %} <!-- ループさせてそれぞれ要素を取り出す -->
+        <li>
+          <a href="{{ url_for('get_post', id=post.id) }}">
+            <h3 class="title">{{ post.title }}</h3>
+            <p class="preview">{{ post.body[:100] }}...</p>
+            <p class="user_name">投稿者: {{ post.user_name }}</p>
+            <p class="created_at">{{ post.created_at }}</p>
+            <div id ="tags">
+              <ul>
+                {% for tag in post.tags %}
+                  <li>{{ tag.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+       </ul>
+       {% endif %}
+     {% endwith %}
+    </div>
+    <div>
+    <form
+    action="{{url_for('post_create')}}"
+    method="POST"
+    novalidate="novalidate"
+  >
+    <p>
+      <label for="title">タイトル：</label><input type="text" name="title" value="{{post.title or request.form["title"]}}" />
+    </p>
+    <p>
+      <label for="user_name">投稿者名：</label><input type="text" name="user_name" value="{{post.user_name or request.form["user_name"]}}" />
+    </p>
+    <p>
+      <label for="body">内容：</label><textarea name="body" cols="40" rows="10">{{post.body or request.form["body"]}}</textarea>
+    </p>
+    <p><button type="submit">送る</button></p>
+  </form>
+
+  </div>
+
+{% endblock %}

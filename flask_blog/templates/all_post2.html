@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/all_post.css') }}"> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <div class="container">
+
+        <input type="search" class="search" placeholder="検索する">
+
+        <div class="filters">
+            {% for tag in tags %}
+            <button class="filter-btn">
+                {{ tag.name }}
+            </button>
+            {% endfor %}
+            <select class="sort">
+                <option>新着順</option>
+            </select>
+        </div>
+    </div>
+
+        <div class="grid">
+            <a href="{{ url_for('post_create') }}">
+                <div class="add-post">
+                    <i class="fas fa-plus"></i>
+                </div>
+
+            {% for post in posts %} <!-- ループさせてそれぞれ要素を取り出す -->
+                
+                <div class="post">
+                    <a href="{{ url_for('get_post', id=post.id) }}">
+                        <div class="post-header">
+                            <span class="post-title">投稿名：{{ post.title }}</span><br>
+                            <span class="post-author">投稿者名：{{ post.user_name }}</span>
+                        </div>
+                        <div class="post-content" id="copyTarget">
+                            {{post.body or request.form["body"]}}
+                        </div>
+                        {% for tag in post.tags %}
+                            <div class="tags">
+                                <span class="tag">タグ： {{ tag.name }}</span>
+                            </div>
+                        {% endfor %}
+                    </a>
+                    <div class="post-footer">
+                        <div class="likes">
+                            <button><i class="far fa-heart" style="color: #EC4899"></i></button>
+                            <span>{{post.likes}}</span>
+                        </div>
+                        <button type="button" class="copy-button" onclick="copyToClipboard()">
+                            <i class="far fa-copy" style="color: #6B7280"></i>
+                        </button>
+                    </div>
+                </div>
+                    
+                
+            {% endfor %}
+            </a>
+
+
+        </div>
+
+        <div class="pagination">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+

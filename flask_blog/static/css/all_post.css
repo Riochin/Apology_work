@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f7f7f7;
+    font-family: sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem; /* 左右に余白を大きく追加 */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FFB800;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.search {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    margin: 1rem 0;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    background: #f3f4f6;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: #FFB800;
+    color: white;
+}
+
+.sort {
+    margin-left: auto;
+    padding: 0.5rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+}
+
+.grid {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    grid-template-columns: repeat(3, 1fr); /* 横三つ並べ */
+    padding: 0 2rem; /* 左右に余白を追加 */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 最小280px, 最大で可変 */
+}
+
+/* デフォルト: 大きな画面での表示 */
+@media screen and (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* 要素が一定の幅で、余白が空く */
+        padding: 0 5rem; /* 左右に余白を追加 */
+    }
+
+    .post {
+        aspect-ratio: 1;
+    }
+
+    .add-post {
+        aspect-ratio: 1; /* 横長に設定 */
+    }
+}
+
+/* 小さな画面（横幅768px未満）での表示 */
+@media screen and (max-width: 767px) {
+    .grid {
+        grid-template-columns: 1fr; /* 一列に並べる */
+        padding: 0 1.5rem; /* 左右に余白を追加 */
+    }
+
+    .post {
+        aspect-ratio: unset; /* アスペクト比を解除 */
+        width: 100%; /* 横幅を100%に設定 */
+    }
+
+    .add-post {
+        aspect-ratio: 16/5; /* 横長に設定 */
+        height: 100px; /* 高さを設定して縦幅を削る */
+        padding: 0 1rem; /* 横幅を少し広げて余裕を持たせる */
+    }
+}
+
+.post {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post-header {
+    margin-bottom: 0.5rem;
+}
+
+.post-title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.post-author {
+    color: #666;
+    font-size: 1rem;
+}
+
+.post-content {
+    margin-bottom: 1rem;
+    color: #333;
+    flex-grow: 1;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    background: #FFB800;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.add-post {
+    background: #B4D167;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.add-post i {
+    color: white;
+    font-size: 2rem;
+}
