@@ -1,22 +1,9 @@
-# Apology_work
-test
+# ごめんなさい.com 
 
-ディレクトリ構成例
+### 🏆Waffle College卒業ハッカソン最優秀賞受賞
 
-MyProject/
-├── app/
-│   ├── __init__.py        # アプリケーションの初期化
-│   ├── routes/
-│   │   ├── __init__.py    # Blueprint の登録
-│   │   ├── post_routes.py # 投稿機能関連のルート
-│   │   ├── bookmark_routes.py # ブックマーク機能関連のルート
-│   ├── models/
-│   │   ├── __init__.py    # モデルの初期化
-│   │   ├── post.py        # 投稿機能のデータモデル
-│   │   ├── bookmark.py    # ブックマーク機能のデータモデル
-│   ├── templates/         # HTML テンプレート
-│   ├── static/            # 静的ファイル（CSS, JS など）
-└── run.py                 # アプリケーションのエントリポイント
+> "まったく新しい謝罪体験"を提供する、
+> 謝罪文の『添削』『投稿』『保存』に特化したサービス🙏🌼
 
 # プロジェクトセットアップガイド
 
@@ -46,3 +33,4 @@ $ pip install -r requirements.txt
 
 中に必要なAPIkeyを入力し、.envexampleには何もAPI keyが書かれていないことを確認してください。絶対にAPIkeyをGit Hub上にPushしないように心がけましょう！
 
+### チーム謝罪工房
