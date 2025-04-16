@@ -4,6 +4,8 @@
 
 > "まったく新しい謝罪体験"を提供する、
 > 謝罪文の『添削』『投稿』『保存』に特化したサービス🙏🌼
+>
+> 発表スライドは[【こちら】](https://www.canva.com/design/DAGb9swtU5c/6zWu1eixijZKwsgWFDBvkw/edit?utm_content=DAGb9swtU5c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)‼️
 
 # プロジェクトセットアップガイド
 
